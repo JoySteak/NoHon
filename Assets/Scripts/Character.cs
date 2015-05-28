@@ -23,6 +23,17 @@ public class Character : MonoBehaviour
 		C,
 		D
 	};
+	public CharacterType m_type = CharacterType.A;
+
+	Character()
+	{
+		m_type = CharacterType.A;
+	}
+
+	Character(CharacterType type)
+	{
+		m_type = type;
+	}
 	
 	// Use this for initialization
 	void Start()
