@@ -45,20 +45,23 @@ public class Trap : MonoBehaviour {
 	
 	}
 
-	void OnCollisionStay2D(Collision2D other){
+	void OnCollisionEnter2D(Collision2D other){
 		//check if collided object is hero
-		if(other.gameObject.tag == "Hero"){
+		if(other.gameObject.tag == "Player"){
+			Debug.Log("Player");
 			//check if hero has interacted, i.e bool hasInteracted is true
-			/*if(other.gameObject.GetComponent<Character>().hasInteract){
+			if(other.gameObject.GetComponent<Character>().m_interacted){
 				//check type of hero
-				if(other.gameObject.GetComponent<Character>().m_type == currentTrap){
+				if((int)other.gameObject.GetComponent<Character>().m_type == (int)currentTrap){
 					//match, 50% success rate
-					DamageOrReward(other,AttemptOpenTrap(true));
+					DamageOrReward(other.gameObject,AttemptOpenTrap(true));
+					//destroy trap
 				}else{
 					//no match, 25% success rate
-					DamageOrReward(other,AttemptOpenTrap(false));
+					DamageOrReward(other.gameObject,AttemptOpenTrap(false));
+					//destroy trap
 				}
-			}*/
+			}
 		}
 	}
 
@@ -85,9 +88,11 @@ public class Trap : MonoBehaviour {
 		if(successCheck){
 			//if trap open success
 			//current hero hp +10
+			Debug.Log("SUCCESS");
 		}else{
 			//trap open fail
 			//all hero hp 10
+			Debug.Log("faaaaail");
 		}
 	}
 }
