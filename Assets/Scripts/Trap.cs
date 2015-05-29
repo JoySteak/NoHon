@@ -51,7 +51,43 @@ public class Trap : MonoBehaviour {
 			//check if hero has interacted, i.e bool hasInteracted is true
 			/*if(other.gameObject.GetComponent<Character>().hasInteract){
 				//check type of hero
+				if(other.gameObject.GetComponent<Character>().m_type == currentTrap){
+					//match, 50% success rate
+					DamageOrReward(other,AttemptOpenTrap(true));
+				}else{
+					//no match, 25% success rate
+					DamageOrReward(other,AttemptOpenTrap(false));
+				}
 			}*/
+		}
+	}
+
+	bool AttemptOpenTrap(bool typeCheck){
+		float rollAttempt = Random.value;
+		if(typeCheck){
+			//if match, 50% success
+			if(rollAttempt> 0.5){
+				return true;
+			}else{
+				return false;
+			}
+		}else{
+			//no match, 25% success
+			if(rollAttempt > 0.75){
+				return true;
+			}else{
+				return false;
+			}
+		}
+	}
+
+	void DamageOrReward(GameObject hero, bool successCheck){
+		if(successCheck){
+			//if trap open success
+			//current hero hp +10
+		}else{
+			//trap open fail
+			//all hero hp 10
 		}
 	}
 }

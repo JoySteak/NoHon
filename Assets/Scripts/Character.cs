@@ -14,6 +14,7 @@ public class Character : MonoBehaviour
 	float m_groundRadius = 0.2f;
 	public LayerMask m_whatIsGround;
 	public float m_jumpForce = 700.0f;
+	public bool m_interacted = false;
 	
 	// Available Type
 	public enum CharacterType
