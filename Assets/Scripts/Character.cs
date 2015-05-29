@@ -14,6 +14,8 @@ public class Character : MonoBehaviour
 	float m_groundRadius = 0.2f;
 	public LayerMask m_whatIsGround;
 	public float m_jumpForce = 700.0f;
+
+	// Interation With Trap
 	public bool m_interacted = false;
 	
 	// Available Type
@@ -26,20 +28,23 @@ public class Character : MonoBehaviour
 	};
 	public CharacterType m_type = CharacterType.A;
 
-	Character()
-	{
-		m_type = CharacterType.A;
-	}
 
-	Character(CharacterType type)
-	{
-		m_type = type;
-	}
+	private Animator m_anim;
+
+//	Character()
+//	{
+//		m_type = CharacterType.A;
+//	}
+//
+//	Character(CharacterType type)
+//	{
+//		m_type = type;
+//	}
 	
 	// Use this for initialization
 	void Start()
 	{
-		
+		m_anim = GetComponent<Animator> ();
 	}
 	
 	// Update is called once per frame
@@ -52,15 +57,25 @@ public class Character : MonoBehaviour
 	{
 		HorizontalMovement();
 	}
-	
+
+	public void TrapInteraction()
+	{
+
+	}
+
 	void HorizontalMovement()
 	{
 		m_grounded = Physics2D.OverlapCircle(m_groundCheck.position, m_groundRadius, m_whatIsGround);
+		m_anim.SetBool ("Ground", m_grounded);
 		
 		float move = Input.GetAxis("Horizontal");
 		rigidbody2D.velocity = new Vector2 (move * m_maxSpeed, rigidbody2D.velocity.y);
+
+		// Animation Run
+		m_anim.SetFloat("Speed", Mathf.Abs (move));
 		
-		
+
+		// If -> Key is press move is > 0.0f and if player is facing left Flip() it
 		if(move > 0.0f && !m_facingRight)
 		{
 			Flip();
@@ -73,10 +88,11 @@ public class Character : MonoBehaviour
 	
 	void JumpMovement()
 	{
-		if(m_grounded && Input.GetKeyDown(KeyCode.Space))
-		{
-			rigidbody2D.AddForce(new Vector2(0.0f, m_jumpForce));
+		// Check if grounded and Space is press to Jump
+		if (m_grounded && Input.GetKeyDown (KeyCode.Space)) {
+			rigidbody2D.AddForce (new Vector2 (0.0f, m_jumpForce));
 		}
+
 	}
 	
 	void Flip()
