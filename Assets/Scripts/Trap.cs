@@ -6,6 +6,8 @@ public class Trap : MonoBehaviour {
 	// Use this for initialization
 
 	//types of trap
+	public float normRollChance = 0.25f;
+	public float bonusRollChance = 0.5f;
 	public enum trapType{
 		A=0,
 		B,
@@ -55,10 +57,12 @@ public class Trap : MonoBehaviour {
 				if((int)other.gameObject.GetComponent<Character>().m_type == (int)currentTrap){
 					//match, 50% success rate
 					DamageOrReward(other.gameObject,AttemptOpenTrap(true));
+					Destroy(this.gameObject);
 					//destroy trap
 				}else{
 					//no match, 25% success rate
 					DamageOrReward(other.gameObject,AttemptOpenTrap(false));
+					Destroy(this.gameObject);
 					//destroy trap
 				}
 			}
@@ -69,14 +73,14 @@ public class Trap : MonoBehaviour {
 		float rollAttempt = Random.value;
 		if(typeCheck){
 			//if match, 50% success
-			if(rollAttempt> 0.5){
+			if(rollAttempt > 1-bonusRollChance){
 				return true;
 			}else{
 				return false;
 			}
 		}else{
 			//no match, 25% success
-			if(rollAttempt > 0.75){
+			if(rollAttempt > 1- normRollChance){
 				return true;
 			}else{
 				return false;
