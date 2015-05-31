@@ -28,6 +28,9 @@ public class Character : MonoBehaviour
 	};
 	public CharacterType m_type = CharacterType.A;
 
+    // Looting Feature
+    public LayerMask m_whatIsLootable;
+
 
 	private Animator m_anim;
 
@@ -50,6 +53,14 @@ public class Character : MonoBehaviour
 	// Update is called once per frame
 	void Update()
 	{
+		if (Input.GetKey (KeyCode.P))
+		{
+			ComponentHealth tmpHealthCompo = gameObject.GetComponent<ComponentHealth>();
+
+			tmpHealthCompo.HPModifier(-1);
+		}
+
+        PlayerPickUp();
 		JumpMovement();
 	}
 	
@@ -58,9 +69,35 @@ public class Character : MonoBehaviour
 		HorizontalMovement();
 	}
 
+	public void ShootBullet()
+	{
+		GameObject bulletReference = PoolManager.current.GetBullet ();
+
+		bulletReference.transform.position = transform.position;
+	}
+
 	public void TrapInteraction()
 	{
 
+	}
+
+	public void PlayerPickUp()
+	{
+        Debug.Log("PlayerPickUp Function Call");
+        // Check if loot key has been pressed and player is grounded in order to loot
+		if (Input.GetKeyDown (KeyCode.Z) && m_grounded)
+		{
+            Debug.Log ("Z - Pressed, Check for looting");
+            // Check if player collided with nearby lootable item
+            Collider2D lootObtained = Physics2D.OverlapCircle(transform.position, 0.5f, m_whatIsLootable);
+
+            if(lootObtained)
+            {
+
+                Debug.Log ("Loot Obtained");
+                lootObtained.gameObject.SetActive(false);
+            }
+		}
 	}
 
 	void HorizontalMovement()

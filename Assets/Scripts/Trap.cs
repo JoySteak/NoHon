@@ -9,7 +9,7 @@ public class Trap : MonoBehaviour {
 	public float normRollChance = 0.25f;
 	public float bonusRollChance = 0.5f;
 	public enum trapType{
-		A=0,
+		A = 0,
 		B,
 		C,
 		D
