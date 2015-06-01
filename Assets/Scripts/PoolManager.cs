@@ -39,20 +39,20 @@ public class PoolManager : MonoBehaviour
 	{
 		for (int i = 0; i < m_amountOfPooledObject; i++)
 		{
-			if(m_pool[i].activeSelf)
+			if(m_pool[i].activeSelf == false)
 			{
 				return m_pool[i];
 			}
 
-			if(m_willGrow)
-			{
-				GameObject bulletInstance = Instantiate(m_pooledObject) as GameObject;
-				m_pool.Add(bulletInstance);
-
-				return bulletInstance;
-			}
-
 		}
+
+        if(m_willGrow)
+        {
+            GameObject bulletInstance = Instantiate(m_pooledObject) as GameObject;
+            m_pool.Add(bulletInstance);
+            
+            return bulletInstance;
+        }
 
 		return null;
 	}
