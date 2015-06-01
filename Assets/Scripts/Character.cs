@@ -17,6 +17,10 @@ public class Character : MonoBehaviour
 
 	// Interation With Trap
 	public bool m_interacted = false;
+
+    // Shoot Delay
+    private float m_shotRate = 0.3f;
+    private float m_shotDelay = 0.0f;
 	
 	// Available Type
 	public enum CharacterType
@@ -53,11 +57,13 @@ public class Character : MonoBehaviour
 	// Update is called once per frame
 	void Update()
 	{
-		if (Input.GetKey (KeyCode.P))
-		{
-			ComponentHealth tmpHealthCompo = gameObject.GetComponent<ComponentHealth>();
+        m_shotDelay += Time.deltaTime;
 
-			tmpHealthCompo.HPModifier(-1);
+		// Shoot the bullet
+		if (Input.GetKey (KeyCode.X) && m_shotDelay > m_shotRate)
+		{
+			ShootBullet ();
+            m_shotDelay = 0.0f;
 		}
 
         PlayerPickUp();
@@ -74,6 +80,13 @@ public class Character : MonoBehaviour
 		GameObject bulletReference = PoolManager.current.GetBullet ();
 
 		bulletReference.transform.position = transform.position;
+
+        bulletReference.GetComponent<BulletScript>().tmpPlayerRef = this;
+
+		// Set the bullet flying direction
+		bulletReference.GetComponent<BulletScript> ().m_facingRight = m_facingRight;
+
+        bulletReference.SetActive(true);
 	}
 
 	public void TrapInteraction()
@@ -141,4 +154,15 @@ public class Character : MonoBehaviour
 		theScale.x *= -1;
 		transform.localScale = theScale;
 	}
+
+    void OnTriggerEnter2D(Collider2D other)
+    {
+        if(other.tag == "Bullet" && other.GetComponent<BulletScript>().tmpPlayerRef != this)
+        {
+            ComponentHealth tmpHealthCompo = gameObject.GetComponent<ComponentHealth>();
+            
+            tmpHealthCompo.HPModifier(-1);
+        }
+        
+    }
 }
