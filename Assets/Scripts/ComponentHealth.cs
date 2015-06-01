@@ -57,7 +57,10 @@ public class ComponentHealth : MonoBehaviour
 //			GameManager.current.gameOverText.enabled = true;
 //			GameManager.current.gameEnd();
 //		}
+<<<<<<< HEAD
 
+=======
+>>>>>>> a1569ace7425483170f241e7ce7b91ec4a9aab44
 		if(this.gameObject.tag == "Player")
 			this.GetComponent<Character> ().DropTreasure();
 		Destroy(this.gameObject);

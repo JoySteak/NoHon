@@ -13,7 +13,7 @@ public class Character : MonoBehaviour
 	public Transform m_groundCheck;
 	float m_groundRadius = 0.2f;
 	public LayerMask m_whatIsGround;
-	public float m_jumpForce = 700.0f;
+	public float m_jumpForce = 800.0f;
 
 	// Interation With Trap
 	public bool m_interacted = false;
@@ -25,6 +25,7 @@ public class Character : MonoBehaviour
 
 	// Treasure
 	private GameObject m_tmpTreasureRef = null;
+	private bool m_haveTreasure = false;
 
 	
 	// Available Type
@@ -127,6 +128,7 @@ public class Character : MonoBehaviour
 	                lootObtained.gameObject.SetActive(false);
 					lootObtained.transform.parent = transform;
 					m_tmpTreasureRef = lootObtained.gameObject;
+					m_haveTreasure = true;
 				}
             }
 		}
@@ -136,6 +138,7 @@ public class Character : MonoBehaviour
 	{
 		m_tmpTreasureRef.SetActive (true);
 		m_tmpTreasureRef.transform.parent = null;
+		m_haveTreasure = false;
 	}
 
 	void HorizontalMovement()
@@ -189,5 +192,8 @@ public class Character : MonoBehaviour
             tmpHealthCompo.HPModifier(-1);
         }
         
+		if (other.name == "TreasureCheckPoint" && m_haveTreasure) {
+			Debug.Log("Victory");
+		}
     }
 }
