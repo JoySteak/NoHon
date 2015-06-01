@@ -12,6 +12,7 @@ public class Boss : MonoBehaviour {
 	public GameObject treasure;
 	Vector2 m_position;
 	Quaternion m_rotation;
+	public int receiveDamage = -1;
 
 	// Use this for initialization
 	void Start(){
@@ -38,14 +39,21 @@ public class Boss : MonoBehaviour {
 
 		//shoots a bullet from in front in fixed intervals
 		//the y value of the bullet spawn coords go up and down
+		var health = GetComponent<ComponentHealth>().CurrHP;
+		/*if(health <= 1){
+			dropLoot();
+		}*/
 
 		//if hp = 0, dies, spawns treasure at death coords
 	}
 
-	void OnCollisionEnter2D(Collision2D other){
+	void OnTriggerEnter2D(Collider2D other){
 		//if hit by bullet, get damaged
-		if(other.gameObject.tag == "Bullet"){
-			//minus health of boss
+
+		if(other.tag == "Bullet"){
+			ComponentHealth tmpHealthCompo = gameObject.GetComponent<ComponentHealth>();
+			
+			tmpHealthCompo.HPModifier(receiveDamage);
 		}
 
 	}

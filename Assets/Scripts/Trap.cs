@@ -8,6 +8,8 @@ public class Trap : MonoBehaviour {
 	//types of trap
 	public float normRollChance = 0.25f;
 	public float bonusRollChance = 0.5f;
+	public int hpBonus = 2;
+	public int hpMinus = -2;
 	public enum trapType{
 		A = 0,
 		B,
@@ -23,15 +25,19 @@ public class Trap : MonoBehaviour {
 		float type = Random.value;
 		if(type < 0.25){
 			currentTrap = trapType.A;
+			this.GetComponent<SpriteRenderer>().color = Color.red;
 			Debug.Log("a");
 		}else if(type < 0.5){
 			currentTrap = trapType.B;
+			this.GetComponent<SpriteRenderer>().color = Color.blue;
 			Debug.Log("b");
 		}else if(type < 0.75){
 			currentTrap = trapType.C;
+			this.GetComponent<SpriteRenderer>().color = Color.black;
 			Debug.Log("c");
 		}else{
 			currentTrap = trapType.D;
+			this.GetComponent<SpriteRenderer>().color = Color.white;
 			Debug.Log("d");
 		}
 	}
@@ -92,10 +98,12 @@ public class Trap : MonoBehaviour {
 		if(successCheck){
 			//if trap open success
 			//current hero hp +10
+			hero.GetComponent<ComponentHealth>().HPModifier(hpBonus);
 			Debug.Log("SUCCESS");
 		}else{
 			//trap open fail
 			//all hero hp 10
+			hero.GetComponent<ComponentHealth>().HPModifier(hpMinus);
 			Debug.Log("faaaaail");
 		}
 	}
