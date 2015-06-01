@@ -21,6 +21,10 @@ public class Character : MonoBehaviour
     // Shoot Delay
     private float m_shotRate = 0.3f;
     private float m_shotDelay = 0.0f;
+
+	// Treasure
+	private GameObject m_tmpTreasureRef = null;
+
 	
 	// Available Type
 	public enum CharacterType
@@ -106,11 +110,21 @@ public class Character : MonoBehaviour
 
             if(lootObtained)
             {
-
-                Debug.Log ("Loot Obtained");
-                lootObtained.gameObject.SetActive(false);
+				if(lootObtained.gameObject.activeSelf)
+				{
+	                Debug.Log ("Loot Obtained");
+	                lootObtained.gameObject.SetActive(false);
+					lootObtained.transform.parent = transform;
+					m_tmpTreasureRef = lootObtained.gameObject;
+				}
             }
 		}
+	}
+
+	public void DropTreasure()
+	{
+		m_tmpTreasureRef.SetActive (true);
+		m_tmpTreasureRef.transform.parent = null;
 	}
 
 	void HorizontalMovement()

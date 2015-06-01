@@ -14,7 +14,9 @@ public class Treasure : MonoBehaviour {
 		//check if parent has hp
 		//if parent is destroyed?
 		//instantiate new treasure on the same spot OR no longer is child of parent
-	
+		if (gameObject.activeSelf) {
+			transform.localScale = new Vector3(1.0f, 1.0f, 1.0f);
+		}
 	}
 
 	void OnTriggerEnter2D(Collider2D other){
