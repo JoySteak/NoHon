@@ -4,6 +4,7 @@ using System.Collections;
 public class Trap : MonoBehaviour {
 
 	// Use this for initialization
+	public Sprite m_switchCenter;
 
 	//types of trap
 	public float normRollChance = 0.25f;
@@ -53,22 +54,25 @@ public class Trap : MonoBehaviour {
 	
 	}
 
-	void OnCollisionEnter2D(Collision2D other){
+	void OnCollisionStay2D(Collision2D other){
 		//check if collided object is hero
 		if(other.gameObject.tag == "Player"){
 			Debug.Log("Player");
 			//check if hero has interacted, i.e bool hasInteracted is true
 			if(other.gameObject.GetComponent<Character>().m_interacted){
+
 				//check type of hero
 				if((int)other.gameObject.GetComponent<Character>().m_type == (int)currentTrap){
 					//match, 50% success rate
 					DamageOrReward(other.gameObject,AttemptOpenTrap(true));
-					Destroy(this.gameObject);
+					gameObject.GetComponent<SpriteRenderer>().sprite = m_switchCenter;
+					gameObject.GetComponent<BoxCollider2D>().enabled = false;
 					//destroy trap
 				}else{
 					//no match, 25% success rate
 					DamageOrReward(other.gameObject,AttemptOpenTrap(false));
-					Destroy(this.gameObject);
+					gameObject.GetComponent<SpriteRenderer>().sprite = m_switchCenter;
+					gameObject.GetComponent<BoxCollider2D>().enabled = false;
 					//destroy trap
 				}
 			}

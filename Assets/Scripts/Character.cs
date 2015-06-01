@@ -17,6 +17,7 @@ public class Character : MonoBehaviour
 
 	// Interation With Trap
 	public bool m_interacted = false;
+	private float m_interactedDelay = 0.0f;
 
     // Shoot Delay
     private float m_shotRate = 0.3f;
@@ -62,6 +63,7 @@ public class Character : MonoBehaviour
 	void Update()
 	{
         m_shotDelay += Time.deltaTime;
+		m_interactedDelay += Time.deltaTime;
 
 		// Shoot the bullet
 		if (Input.GetKey (KeyCode.X) && m_shotDelay > m_shotRate)
@@ -72,6 +74,15 @@ public class Character : MonoBehaviour
 
         PlayerPickUp();
 		JumpMovement();
+
+		if (Input.GetKey (KeyCode.E)) {
+			TrapInteraction();
+		}
+
+		if (m_interactedDelay > 2.0f) {
+			m_interacted = false;
+			m_interactedDelay = 0.0f;
+		}
 	}
 	
 	void FixedUpdate()
@@ -95,7 +106,7 @@ public class Character : MonoBehaviour
 
 	public void TrapInteraction()
 	{
-
+		m_interacted = true;
 	}
 
 	public void PlayerPickUp()

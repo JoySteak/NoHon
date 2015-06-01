@@ -14,6 +14,7 @@ public class Boss : MonoBehaviour {
 	Quaternion m_rotation;
 	public int receiveDamage = -1;
 	bool startShooting = false;
+	bool treasureSpawned = false;
 
 
 	// Use this for initialization
@@ -44,10 +45,11 @@ public class Boss : MonoBehaviour {
 
 		//shoots a bullet from in front in fixed intervals
 		//the y value of the bullet spawn coords go up and down
-		//var health = GetComponent<ComponentHealth>().CurrHP;
-		/*if(health <= 1){
+		var health = GetComponent<ComponentHealth>().CurrHP;
+		if(health <= 1 && !treasureSpawned){
 			dropLoot();
-		}*/
+			treasureSpawned = true;
+		}
 
 		//if hp = 0, dies, spawns treasure at death coords
 	}
@@ -63,9 +65,13 @@ public class Boss : MonoBehaviour {
 
 	}
 
-	public void DropTreasure()
+	void dropLoot(){
+		Instantiate(treasure,m_position,m_rotation);
+	}
+
+	/*public void DropTreasure()
 	{
 		treasure.SetActive (true);
 		treasure.transform.parent = null;
-	}
+	}*/
 }
