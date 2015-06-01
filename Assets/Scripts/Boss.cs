@@ -13,6 +13,8 @@ public class Boss : MonoBehaviour {
 	Vector2 m_position;
 	Quaternion m_rotation;
 	public int receiveDamage = -1;
+	bool startShooting = false;
+
 
 	// Use this for initialization
 	void Start(){
@@ -24,7 +26,10 @@ public class Boss : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update(){
-		if(bulletTimer <= 0){
+		if(GameObject.Find("Trap")==null){
+			startShooting = true;
+		}
+		if(bulletTimer <= 0 && startShooting){
 			bulletTimer = bulletInterval;
 			//shoot bullet
 			bullet = poolManager.GetComponent<PoolManager>().GetBullet();
@@ -39,7 +44,7 @@ public class Boss : MonoBehaviour {
 
 		//shoots a bullet from in front in fixed intervals
 		//the y value of the bullet spawn coords go up and down
-		var health = GetComponent<ComponentHealth>().CurrHP;
+		//var health = GetComponent<ComponentHealth>().CurrHP;
 		/*if(health <= 1){
 			dropLoot();
 		}*/
@@ -58,8 +63,9 @@ public class Boss : MonoBehaviour {
 
 	}
 
-	void dropLoot(){
-		//instantiate treasure at death coords
-		Instantiate(treasure, m_position,m_rotation);
+	public void DropTreasure()
+	{
+		treasure.SetActive (true);
+		treasure.transform.parent = null;
 	}
 }
