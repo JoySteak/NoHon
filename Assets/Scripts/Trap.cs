@@ -24,15 +24,15 @@ public class Trap : MonoBehaviour {
 		//assign a type to this trap
 		//trapType currentTrap;
 		float type = Random.value;
-		if(type < 0.25){
+		if(type < 0.25f){
 			currentTrap = trapType.A;
 			this.GetComponent<SpriteRenderer>().color = Color.red;
 			Debug.Log("a");
-		}else if(type < 0.5){
+		}else if(type < 0.5f){
 			currentTrap = trapType.B;
 			this.GetComponent<SpriteRenderer>().color = Color.blue;
 			Debug.Log("b");
-		}else if(type < 0.75){
+		}else if(type < 0.75f){
 			currentTrap = trapType.C;
 			this.GetComponent<SpriteRenderer>().color = Color.black;
 			Debug.Log("c");
@@ -79,6 +79,17 @@ public class Trap : MonoBehaviour {
 		}
 	}
 
+	void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info){
+		Debug.Log("aaa");
+		if(stream.isWriting){
+			stream.SendNext((int)currentTrap);
+			SetTrapType(currentTrap);
+		}else{
+			currentTrap = (trapType)stream.ReceiveNext();
+			SetTrapType(currentTrap);
+		}
+	}
+
 	bool AttemptOpenTrap(bool typeCheck){
 		float rollAttempt = Random.value;
 		if(typeCheck){
@@ -109,6 +120,26 @@ public class Trap : MonoBehaviour {
 			//all hero hp 10
 			hero.GetComponent<ComponentHealth>().HPModifier(hpMinus);
 			Debug.Log("faaaaail");
+		}
+	}
+
+	void SetTrapType(trapType type){
+		if(type == trapType.A){
+			currentTrap = trapType.A;
+			this.GetComponent<SpriteRenderer>().color = Color.red;
+			Debug.Log("a");
+		}else if(type == trapType.B){
+			currentTrap = trapType.B;
+			this.GetComponent<SpriteRenderer>().color = Color.blue;
+			Debug.Log("b");
+		}else if(type == trapType.C){
+			currentTrap = trapType.C;
+			this.GetComponent<SpriteRenderer>().color = Color.black;
+			Debug.Log("c");
+		}else{
+			currentTrap = trapType.D;
+			this.GetComponent<SpriteRenderer>().color = Color.white;
+			Debug.Log("d");
 		}
 	}
 }

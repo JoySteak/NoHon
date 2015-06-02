@@ -2,7 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 
-public class Character : MonoBehaviour
+public class Character : Photon.MonoBehaviour
 {
 	public float m_maxSpeed = 5.0f;
 	
@@ -89,7 +89,8 @@ public class Character : MonoBehaviour
 	
 	void FixedUpdate()
 	{
-		HorizontalMovement();
+		if(photonView.isMine)
+			HorizontalMovement();
 	}
 
 	public void ShootBullet()

@@ -5,16 +5,16 @@ public class CameraFollow : MonoBehaviour {
 
 	[SerializeField]
 	float constant = 0.01f;
-	[SerializeField]
 	GameObject target = null;
 	// Use this for initialization
 	void Start () {
-		
+		target = GameObject.Find("Player(Clone)");
 	}
 	
 	// Update is called once per frame
 	void Update () {
 		//when player dies, target=null, stop following
+		target = GameObject.Find("Player(Clone)");
 		if(target==null) return;
 		
 		//calculate new camera position
