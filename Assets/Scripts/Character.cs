@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
 public class Character : MonoBehaviour
 {
@@ -93,6 +94,10 @@ public class Character : MonoBehaviour
 
 	public void ShootBullet()
 	{
+		List<GameObject> tmpPool = TrapManagerScript.current.m_trapPool;
+		if(tmpPool[tmpPool.Count - 1].GetComponent<BoxCollider2D>().enabled)
+			return;
+
 		GameObject bulletReference = PoolManager.current.GetBullet ();
 
 		bulletReference.transform.position = transform.position;
@@ -136,6 +141,9 @@ public class Character : MonoBehaviour
 
 	public void DropTreasure()
 	{
+		if(m_tmpTreasureRef == null)
+			return;
+
 		m_tmpTreasureRef.SetActive (true);
 		m_tmpTreasureRef.transform.parent = null;
 		m_haveTreasure = false;

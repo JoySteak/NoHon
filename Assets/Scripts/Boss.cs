@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
 public class Boss : MonoBehaviour {
 
@@ -27,8 +28,10 @@ public class Boss : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update(){
-		if(GameObject.Find("Trap")==null){
-			startShooting = true;
+		if(TrapManagerScript.current.m_trapPool != null){
+			List<GameObject> tmpPool = TrapManagerScript.current.m_trapPool;
+			if(!tmpPool[tmpPool.Count - 1].GetComponent<BoxCollider2D>().enabled)
+				startShooting = true;
 		}
 		if(bulletTimer <= 0 && startShooting){
 			bulletTimer = bulletInterval;
