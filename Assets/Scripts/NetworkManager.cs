@@ -53,8 +53,9 @@ public class NetworkManager : MonoBehaviour {
 		
 		PhotonNetwork.Instantiate(player.name,new Vector3(9.4f,13.77f,0.0f),Quaternion.identity,0);
 		if(isRoomMaster){
+			PhotonNetwork.Instantiate("TrapManager",Vector3.zero,Quaternion.identity,0);
 			for(int i =0; i<list.Count;i++){
-				PhotonNetwork.Instantiate("TrapSwitchRight",list[i],Quaternion.identity,0);
+				GameObject tmpTrap = PhotonNetwork.Instantiate("TrapSwitchRight",list[i],Quaternion.identity,0);
 			}
 		}
 	}

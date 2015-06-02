@@ -71,7 +71,6 @@ public class Character : Photon.MonoBehaviour
 		if (Input.GetKey (KeyCode.X) && m_shotDelay > m_shotRate)
 		{
 			ShootBullet ();
-            m_shotDelay = 0.0f;
 		}
 
         PlayerPickUp();
@@ -95,6 +94,8 @@ public class Character : Photon.MonoBehaviour
 
 	public void ShootBullet()
 	{
+		if (!photonView.isMine)
+			return;
 		List<GameObject> tmpPool = TrapManagerScript.current.m_trapPool;
 		if(tmpPool[tmpPool.Count - 1].GetComponent<BoxCollider2D>().enabled)
 			return;
@@ -109,6 +110,8 @@ public class Character : Photon.MonoBehaviour
 		bulletReference.GetComponent<BulletScript> ().m_facingRight = m_facingRight;
 
         bulletReference.SetActive(true);
+
+		m_shotDelay = 0.0f;
 	}
 
 	public void TrapInteraction()
@@ -205,4 +208,10 @@ public class Character : Photon.MonoBehaviour
 			Debug.Log("Victory");
 		}
     }
+
+	[RPC]
+	void RemoteDeductHP(int HP)
+	{
+		gameObject.GetComponent<ComponentHealth>().HPModifier(HP);
+	}
 }

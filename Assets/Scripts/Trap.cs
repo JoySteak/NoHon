@@ -67,17 +67,15 @@ public class Trap : Photon.MonoBehaviour {
 
 				//check type of hero
 				if((int)other.gameObject.GetComponent<Character>().m_type == (int)currentTrap){
+					//destroy trap
+					photonView.RPC("RemoteDisableCollider", PhotonTargets.AllBufferedViaServer, null);
 					//match, 50% success rate
 					DamageOrReward(other.gameObject,AttemptOpenTrap(true));
-					gameObject.GetComponent<SpriteRenderer>().sprite = m_switchCenter;
-					gameObject.GetComponent<BoxCollider2D>().enabled = false;
-					//destroy trap
 				}else{
+					//destroy trap
+					photonView.RPC("RemoteDisableCollider", PhotonTargets.AllBufferedViaServer, null);
 					//no match, 25% success rate
 					DamageOrReward(other.gameObject,AttemptOpenTrap(false));
-					gameObject.GetComponent<SpriteRenderer>().sprite = m_switchCenter;
-					gameObject.GetComponent<BoxCollider2D>().enabled = false;
-					//destroy trap
 				}
 			}
 		}
@@ -117,12 +115,14 @@ public class Trap : Photon.MonoBehaviour {
 		if(successCheck){
 			//if trap open success
 			//current hero hp +10
-			hero.GetComponent<ComponentHealth>().HPModifier(hpBonus);
+			hero.GetComponent<Character>().photonView.RPC("RemoteDeductHP", PhotonTargets.AllViaServer, new object[]{hpBonus});
+//			hero.GetComponent<ComponentHealth>().HPModifier(hpBonus);
 			Debug.Log("SUCCESS");
 		}else{
 			//trap open fail
 			//all hero hp 10
-			hero.GetComponent<ComponentHealth>().HPModifier(hpMinus);
+			hero.GetComponent<Character>().photonView.RPC("RemoteDeductHP", PhotonTargets.AllViaServer, new object[]{hpMinus});
+//			hero.GetComponent<ComponentHealth>().HPModifier(hpMinus);
 			Debug.Log("faaaaail");
 		}
 	}
@@ -151,7 +151,9 @@ public class Trap : Photon.MonoBehaviour {
 	}
 
 	[RPC]
-	void remoteDeductHp() {
-		hero.GetComponent<ComponentHealth>().HPModifier(hpBonus);
+	void RemoteDisableCollider()
+	{
+		gameObject.GetComponent<SpriteRenderer>().sprite = m_switchCenter;
+		gameObject.GetComponent<BoxCollider2D>().enabled = false;
 	}
 }
